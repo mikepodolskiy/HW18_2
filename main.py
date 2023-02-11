@@ -12,7 +12,6 @@ from app.views.directors import director_ns
 from app.views.genres import genre_ns
 
 from config import Config
-# from models import Review, Book
 from app.setup_db import db
 from app.initial_data import data
 from app.dao.model.movies import Movie
@@ -41,6 +40,7 @@ def register_extensions(app):
 # функция
 def create_data(app, db):
     with app.app_context():
+        db.drop_all()
         db.create_all()
         for movie in data["movies"]:
             m = Movie(

@@ -1,6 +1,9 @@
+# import required libraries and modules
+from marshmallow import Schema, fields
 from app.setup_db import db
 
 
+# creating class as inheritance of Model class, cols acc to UML
 class Movie(db.Model):
     __tablename__ = 'movie'
     id = db.Column(db.Integer, primary_key=True)
@@ -13,3 +16,15 @@ class Movie(db.Model):
     genre = db.relationship("Genre")
     director_id = db.Column(db.Integer, db.ForeignKey("director.id"))
     director = db.relationship("Director")
+
+
+# creating Schema class as inheritance of Schema for serialization
+class MovieSchema(Schema):
+    id = fields.Int()
+    title = fields.Str()
+    description = fields.Str()
+    trailer = fields.Str()
+    year = fields.Int()
+    rating = fields.Float()
+    genre_id = fields.Int()
+    director_id = fields.Int()
