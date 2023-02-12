@@ -1,16 +1,35 @@
+# import required libraries and modules
 from flask_restx import Namespace, Resource
+from app.dao.model.genres import GenreSchema
 
+# creating namespace
 genre_ns = Namespace('genres')
 
+# creating serializators for one or many elements
+genres_schema = GenreSchema(many=True)
+director_schema = GenreSchema()
+
+
+# creating class based views using namespaces for all required endpoints
 @genre_ns.route('/')
-class MoviesView(Resource):
+class GenresView(Resource):
     def get(self):
-        return 'get all', 200
-
-
+        """
+        getting all genres list using method get_all of GenreDao class object
+        using serialization with Schema class object
+        :return: genres list(?????)
+        """
+        all_genres = genre_dao.get_all()
+        return genres_schema.dump(all_genres), 200
 
 
 @genre_ns.route('<int:gid>')
-class MoviesView(Resource):
+class GenreView(Resource):
     def get(self, gid):
-        return 'get one', 200
+        """
+        getting one genre (dict????) using method get_one of GenreDao class object
+        using serialization with Schema class object
+        :return: genre with required id - dict(?????)
+        """
+        requested_genre = genre_dao.get_one(gid)
+        return genres_schema.dump(requested_genre), 200

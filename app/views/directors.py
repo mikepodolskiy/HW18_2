@@ -1,16 +1,35 @@
+# import required libraries and modules
 from flask_restx import Namespace, Resource
+from app.dao.model.directors import DirectorSchema
 
+# creating namespace
 director_ns = Namespace('directors')
 
+# creating serializators for one or many elements
+directors_schema = DirectorSchema(many=True)
+director_schema = DirectorSchema()
+
+
+# creating class based views using namespaces for all required endpoints
 @director_ns.route('/')
-class MoviesView(Resource):
+class DirectorsView(Resource):
     def get(self):
-        return 'get all', 200
-
-
+        """
+        getting all directors list using method get_all of DirectorDao class object
+        using serialization with Schema class object
+        :return: directors list(?????)
+        """
+        all_directors = director_dao.get_all()
+        return directors_schema.dump(all_directors), 200
 
 
 @director_ns.route('<int:did>')
-class MoviesView(Resource):
+class DirectorView(Resource):
     def get(self, did):
-        return 'get one', 200
+        """
+        getting one director (dict????) using method get_one of DirectorDao class object
+        using serialization with Schema class object
+        :return: director with required id - dict(?????)
+        """
+        requested_director = director_dao.get_one(did)
+        return directors_schema.dump(requested_director), 200

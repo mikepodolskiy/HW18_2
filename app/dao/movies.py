@@ -5,7 +5,7 @@ from app.dao.model.movies import Movie
 # creating class for interaction with db
 class MovieDao:
     # creating constructor, getting object - session and save it in itself. session could be with different db type (
-    # sqlit... etc)
+    # sqlite... etc)
     def __init__(self, session):
         self.session = session
 
@@ -27,15 +27,36 @@ class MovieDao:
 
         return self.session.query(Movie).get(mid)
 
-    def get_by_director(self, did):
+    def get_by(self, substring):
+
+        data = dict([(item.split('=')) for item in substring])
+
+        if 'director_id' in data.keys():
+            did = data['director_id']
+            return self.session.query.filter(Movie.director_id == did)
+
+        if 'genre_id' in data:
+            gid = data['genre_id']
+            return self.session.query.filter(Movie.genre_id == gid)
+
+        if 'year' in data:
+            y = data['year']
+            return self.session.query.filter(Movie.year == y)
+
+
+        director_id = re
+
         pass
+
+    def get_by_director(self,did ):
+        self.session.query.filter(Movie.director_id == did)
 
     def get_by_genre(self, gid):
-        pass
+        self.session.query.filter(Movie.genre_id == gid)
 
-    def get_by_year(self, yid):
+    def get_by_year(self, y):
 
-        pass
+        self.session.query.filter(Movie.year == y)
 
     def create(self, data):
         """
@@ -74,5 +95,46 @@ class MovieDao:
         return movie_to_update
 
 
+    def update_partial(self, data):
+        """
+        getting id from data using get method (as data type is dict)
+        getting movie to update using get_one with id, that was gotten
+        checking what fields to update in data creating fields of movie_to update with info, received from data,
+        using get() method by field names
+        requesting to session to add and commit
+        :param data: data from request body
+        :return: updated element (not necessary)
+        """
+        mid = data.get('id')
+        movie_to_update = self.get_one(mid)
+        if 'title' in data:
+            movie_to_update.title = data.get('title')
+        if 'description' in data:
+            movie_to_update.description = data.get('description')
+        if 'trailer' in data:
+            movie_to_update.trailer = data.get('trailer')
+        if 'year' in data:
+            movie_to_update.year = data.get('year')
+        if 'rating' in data:
+            movie_to_update.rating = data.get('rating')
+        if 'genre_id' in data:
+            movie_to_update.genre_id = data.get('genre_id')
+        if 'director_id' in data:
+            movie_to_update.director_id = data.get('director_id')
+
+        self.session.add(movie_to_update)
+        self.session.commit()
+
+        return movie_to_update
+
+
+
     def delete(self, mid):
-        pass
+        """
+        getting movie to delete using get_one with id
+        :param mid: id of required movie
+        :return: nothing
+        """
+        movie_to_delete = self.get_one(mid)
+        self.session.delete(movie_to_delete)
+        self.session.commit()
