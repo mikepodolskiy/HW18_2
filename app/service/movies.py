@@ -12,12 +12,12 @@ class MovieService:
         """
         self.dao = dao
 
-    def get_all(self):
+    def get_all(self, filters):
         """
         applying get_all() method to dao object
         :return:
         """
-        return self.dao.get_all()
+        return self.dao.get_all(filters)
     def get_one(self, mid):
         """
         applying get_one() method to dao object

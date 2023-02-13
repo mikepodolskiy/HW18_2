@@ -21,15 +21,25 @@ class MoviesView(Resource):
         using serialization with Schema class object
         :return: movies list
         """
-        dri
+        director = request.args.get('director_id')
+        genre = request.args.get('genre_id')
+        year = request.args.get('year')
+        filters = {'director_id': director,
+                   'genre_id': genre,
+                   'year': year
+        }
 
-        substring = request.query_string
-        if substring:
-            movies = movie_service.get_by(substring)
-            return movies_schema.dump(movies), 200
+        all_movies = movie_service.get_all(filters)
 
-        all_movies = movie_service.get_all()
         return movies_schema.dump(all_movies), 200
+
+        # substring = request.query_string
+        # if substring:
+        #     movies = movie_service.get_by(substring)
+        #     return movies_schema.dump(movies), 200
+        #
+        # all_movies = movie_service.get_all()
+        # return movies_schema.dump(all_movies), 200
 
     def post(self):
         """

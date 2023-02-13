@@ -11,12 +11,20 @@ class MovieDao:
 
     # creating methods for CRUD
 
-    def get_all(self):
+    def get_all(self, filters):
         """
         using session, requesting to db to required class, getting all data
         :return: all data of required class
         """
+        if filters['director_id']:
+            return self.session.query(Movie).filter(Movie.director_id == filters['director_id']).all()
+        if filters['genre_id']:
+            return self.session.query(Movie).filter(Movie.genre_id == filters['genre_id']).all()
+        if filters['year']:
+            return self.session.query(Movie).filter(Movie.year == filters['year']).all()
+
         return self.session.query(Movie).all()
+
 
     def get_one(self, mid):
         """
@@ -26,24 +34,6 @@ class MovieDao:
         """
 
         return self.session.query(Movie).get(mid)
-
-    def get_by(self, substring):
-
-        data_preliminary = dict([(item.split('=')) for item in str(substring).split('&')])
-        data = {k: int(v.replace("'", "")) for k, v in data_preliminary.items()}
-        print(data)
-
-        if 'director_id' in data.keys():
-            did = data['director_id']
-            return self.session.query.filter(Movie.director_id == did)
-
-        if 'genre_id' in data.keys():
-            gid = data['genre_id']
-            return self.session.query.filter(Movie.genre_id == gid)
-
-        if 'year' in data.keys():
-            y = data['year']
-            return self.session.query.filter(Movie.year == y)
 
 
     def create(self, data):

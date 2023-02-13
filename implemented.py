@@ -7,12 +7,6 @@ from app.service.genres import GenreService
 from app.service.movies import MovieService
 from app.setup_db import db
 
-# book_dao = BookDAO(db.session)
-# book_service = BookService(dao=book_dao)
-#
-# review_dao = ReviewDAO(db.session)
-# review_service = ReviewService(dao=review_dao)
-
 # creating Dao object for movie, with session
 movie_dao = MovieDao(db.session)
 # creating Service object fo movie, with movie dao object
