@@ -5,7 +5,7 @@ from app.dao.movies import MovieDao
 from app.service.directors import DirectorService
 from app.service.genres import GenreService
 from app.service.movies import MovieService
-from app.setup_db import db
+from setup_db import db
 
 # creating Dao object for movie, with session
 movie_dao = MovieDao(db.session)

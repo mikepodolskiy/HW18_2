@@ -18,27 +18,21 @@ class MovieService:
         :return:
         """
         return self.dao.get_all(filters)
+
     def get_one(self, mid):
         """
         applying get_one() method to dao object
-
         :param mid: id of required movie
         :return:
         """
         return self.dao.get_one(mid)
 
-    def get_by(self, substring):
-        return self.dao.get_by(substring)
-
-
     def create(self, data):
         """
-        applying create() method to dao object, using data form response
+        applying a create() method to dao object, using data form response
         :param data:
-        :return:
         """
         return self.dao.create(data)
-
 
     def update(self, data):
         """
@@ -46,9 +40,7 @@ class MovieService:
         getting movie to update using get_one with id, that was gotten
         creating fields of movie_to update with info, received from data, using get() method by field names
         :param data: data from request body
-        :return:
         """
-
 
         mid = data.get('id')
         movie_to_update = self.get_one(mid)
@@ -69,7 +61,6 @@ class MovieService:
         checking what fields to update in data creating fields of movie_to update with info, received from data,
         using get() method by field names
         :param data: data from request body
-        :return:
         """
         mid = data.get('id')
         movie_to_update = self.get_one(mid)
@@ -89,5 +80,6 @@ class MovieService:
             movie_to_update.director_id = data.get('director_id')
 
         self.dao.update(movie_to_update)
+
     def delete(self, mid):
         self.dao.delete(mid)

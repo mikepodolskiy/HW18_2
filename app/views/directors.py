@@ -16,7 +16,7 @@ director_schema = DirectorSchema()
 class DirectorsView(Resource):
     def get(self):
         """
-        getting all directors list using method get_all of DirectorDao class object
+        getting all directors list using method get_all of DirectorService class object
         using serialization with Schema class object
         :return: directors list
         """
@@ -28,7 +28,7 @@ class DirectorsView(Resource):
 class DirectorView(Resource):
     def get(self, did):
         """
-        getting one director dict using method get_one of DirectorDao class object
+        getting one director dict using method get_one of DirectorService class object
         using serialization with Schema class object
         :return: director with required id - dict(?????)
         """

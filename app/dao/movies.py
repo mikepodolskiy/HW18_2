@@ -25,7 +25,6 @@ class MovieDao:
 
         return self.session.query(Movie).all()
 
-
     def get_one(self, mid):
         """
         using session, requesting to db to required class, getting data by id
@@ -34,7 +33,6 @@ class MovieDao:
         """
 
         return self.session.query(Movie).get(mid)
-
 
     def create(self, data):
         """
@@ -48,10 +46,11 @@ class MovieDao:
         self.session.add(movie)
         self.session.commit()
         return movie
+
     def update(self, movie_to_update):
         """
         requesting to session to add movie and commit
-        :param data: data from request body
+        :param movie_to_update: element to be updated
         :return: updated element (not necessary)
         """
 
@@ -59,8 +58,6 @@ class MovieDao:
         self.session.commit()
 
         return movie_to_update
-
-
 
     def delete(self, mid):
         """

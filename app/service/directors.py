@@ -15,7 +15,6 @@ class DirectorService:
     def get_all(self):
         """
         applying get_all() method to dao object
-        :return:
         """
         return self.dao.get_all()
 
@@ -24,6 +23,5 @@ class DirectorService:
         applying get_one() method to dao object
 
         :param gid: id of required movie
-        :return:
         """
         return self.dao.get_one(gid)

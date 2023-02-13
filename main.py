@@ -1,25 +1,19 @@
-# основной файл приложения. здесь конфигурируется фласк, сервисы, SQLAlchemy и все остальное что требуется для приложения.
-# этот файл часто является точкой входа в приложение
-
-# Пример
-
+# import required libraries and modules
 from flask import Flask
-
 from flask_restx import Api
 
 from app.views.movies import movie_ns
 from app.views.directors import director_ns
 from app.views.genres import genre_ns
-
 from config import Config
-from app.setup_db import db
-from app.initial_data import data
+from setup_db import db
+from initial_data import data
 from app.dao.model.movies import Movie
 from app.dao.model.directors import Director
 from app.dao.model.genres import Genre
 
 
-# функция создания основного объекта app
+# creating and configuring app in function
 def create_app(config_object):
     app = Flask(__name__)
     app.config.from_object(config_object)
@@ -27,7 +21,7 @@ def create_app(config_object):
     return app
 
 
-# функция подключения расширений (Flask-SQLAlchemy, Flask-RESTx, ...)
+# adding sqlalchemy and rest-x, adding namespaces in function
 def register_extensions(app):
     db.init_app(app)
     api = Api(app)
@@ -37,7 +31,7 @@ def register_extensions(app):
     create_data(app, db)
 
 
-# функция
+# function for data creation from file
 def create_data(app, db):
     with app.app_context():
         db.drop_all()
@@ -73,8 +67,8 @@ def create_data(app, db):
                 db.session.add(g)
 
 
+# creating app using function
 app = create_app(Config())
-app.debug = True
 
 if __name__ == '__main__':
     app.run(host="localhost", port=10001, debug=True)

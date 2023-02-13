@@ -16,7 +16,7 @@ genre_schema = GenreSchema()
 class GenresView(Resource):
     def get(self):
         """
-        getting all genres list using method get_all of GenreDao class object
+        getting all genres list using method get_all of GenreService class object
         using serialization with Schema class object
         :return: genres list
         """
@@ -28,7 +28,7 @@ class GenresView(Resource):
 class GenreView(Resource):
     def get(self, gid):
         """
-        getting one genre dict using method get_one of GenreDao class object
+        getting one genre dict using method get_one of GenreService class object
         using serialization with Schema class object
         :return: genre with required id - dict
         """
