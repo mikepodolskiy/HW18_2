@@ -1,7 +1,8 @@
 # import required libraries and modules
 from flask import request
 from flask_restx import Namespace, Resource
-from app.dao.model.movies import MovieSchema
+from app.dao.model.movies import MovieSchema, Movie
+from implemented import movie_service
 
 # creating namespaces for movies
 movie_ns = Namespace('movies')
@@ -18,27 +19,16 @@ class MoviesView(Resource):
         """
         getting all movies list using method get_all of MovieDao class object
         using serialization with Schema class object
-        :return: movies list(?????)
+        :return: movies list
         """
-        # director_id = request.args.get('director_id')
-        # genre_id = request.args.get('genre_id')
-        # year = request.args.get('year')
-        # if director_id:
-        #     director_movies = movie_dao.get_by_director(director_id)
-        #     return movies_schema.dump(director_movies), 200
-        # if genre_id:
-        #     genre_movies = movie_dao.get_by_genre(genre_id)
-        #     return movies_schema.dump(genre_movies), 200
-        # if year:
-        #     year_movies = movie_dao.get_by_year(year)
-        #     return movies_schema.dump(year_movies), 200
+        dri
 
         substring = request.query_string
         if substring:
-            movies = movie_dao.get_by(substring)
+            movies = movie_service.get_by(substring)
             return movies_schema.dump(movies), 200
 
-        all_movies = movie_dao.get_all()
+        all_movies = movie_service.get_all()
         return movies_schema.dump(all_movies), 200
 
     def post(self):
@@ -48,22 +38,21 @@ class MoviesView(Resource):
         :return: info message,response code
         """
         req_json = request.json
-        movie_dao.create(req_json)
+        movie_service.create(req_json)
 
         return 'data added', 201
 
 
-@movie_ns.route('<int:mid>')
+@movie_ns.route('/<int:mid>')
 class MovieView(Resource):
     def get(self, mid):
         """
-        getting one movie (dict????) using method get_one of MovieDao class object
+        getting one movie using method get_one of MovieDao class object
         using serialization with Schema class object
-        :return: movie with required id - dict(?????)
+        :return: movie with required id - dict
         """
-        requested_movie = movie_dao.get_one(mid)
+        requested_movie = movie_service.get_one(mid)
         return movie_schema.dump(requested_movie), 200
-
 
     def put(self, mid):
         """
@@ -75,26 +64,23 @@ class MovieView(Resource):
         """
         request_data = request.json
         request_data['id'] = mid
-        movie_dao.update(request_data)
-
+        movie_service.update(request_data)
 
         return '', 204
-
 
     def patch(self, mid):
         """
-                getting data from request, transforming data using .json
-                adding id to transformed data (as it should not contain id)
-                updating required element using method update_partial() of MovieDao class object
-                :param mid: element to update id
-                :return: response code
-                """
+        getting data from request, transforming data using .json
+        adding id to transformed data (as it should not contain id)
+        updating required element using method update_partial() of MovieDao class object
+        :param mid: element to update id
+        :return: response code
+        """
         request_data = request.json
         request_data['id'] = mid
-        movie_dao.update_partial(request_data)
+        movie_service.update_partial(request_data)
 
         return '', 204
-
 
     def delete(self, mid):
         """
@@ -103,6 +89,6 @@ class MovieView(Resource):
         :param mid: id of required movie to be deleted
         :return: response code
         """
-        movie_dao.delete(mid)
+        movie_service.delete(mid)
 
         return '', 204

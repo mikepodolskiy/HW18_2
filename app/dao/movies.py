@@ -29,34 +29,22 @@ class MovieDao:
 
     def get_by(self, substring):
 
-        data = dict([(item.split('=')) for item in substring])
+        data_preliminary = dict([(item.split('=')) for item in str(substring).split('&')])
+        data = {k: int(v.replace("'", "")) for k, v in data_preliminary.items()}
+        print(data)
 
         if 'director_id' in data.keys():
             did = data['director_id']
             return self.session.query.filter(Movie.director_id == did)
 
-        if 'genre_id' in data:
+        if 'genre_id' in data.keys():
             gid = data['genre_id']
             return self.session.query.filter(Movie.genre_id == gid)
 
-        if 'year' in data:
+        if 'year' in data.keys():
             y = data['year']
             return self.session.query.filter(Movie.year == y)
 
-
-        director_id = re
-
-        pass
-
-    def get_by_director(self,did ):
-        self.session.query.filter(Movie.director_id == did)
-
-    def get_by_genre(self, gid):
-        self.session.query.filter(Movie.genre_id == gid)
-
-    def get_by_year(self, y):
-
-        self.session.query.filter(Movie.year == y)
 
     def create(self, data):
         """
@@ -70,57 +58,12 @@ class MovieDao:
         self.session.add(movie)
         self.session.commit()
         return movie
-    def update(self, data):
+    def update(self, movie_to_update):
         """
-        getting id from data using get method (as data type is dict)
-        getting movie to update using get_one with id, that was gotten
-        creating fields of movie_to update with info, received from data, using get() method by field names
-        requesting to session to add and commit
+        requesting to session to add movie and commit
         :param data: data from request body
         :return: updated element (not necessary)
         """
-        mid = data.get('id')
-        movie_to_update = self.get_one(mid)
-        movie_to_update.title = data.get('title')
-        movie_to_update.description = data.get('description')
-        movie_to_update.trailer = data.get('trailer')
-        movie_to_update.year = data.get('year')
-        movie_to_update.rating = data.get('rating')
-        movie_to_update.genre_id = data.get('genre_id')
-        movie_to_update.director_id = data.get('director_id')
-
-        self.session.add(movie_to_update)
-        self.session.commit()
-
-        return movie_to_update
-
-
-    def update_partial(self, data):
-        """
-        getting id from data using get method (as data type is dict)
-        getting movie to update using get_one with id, that was gotten
-        checking what fields to update in data creating fields of movie_to update with info, received from data,
-        using get() method by field names
-        requesting to session to add and commit
-        :param data: data from request body
-        :return: updated element (not necessary)
-        """
-        mid = data.get('id')
-        movie_to_update = self.get_one(mid)
-        if 'title' in data:
-            movie_to_update.title = data.get('title')
-        if 'description' in data:
-            movie_to_update.description = data.get('description')
-        if 'trailer' in data:
-            movie_to_update.trailer = data.get('trailer')
-        if 'year' in data:
-            movie_to_update.year = data.get('year')
-        if 'rating' in data:
-            movie_to_update.rating = data.get('rating')
-        if 'genre_id' in data:
-            movie_to_update.genre_id = data.get('genre_id')
-        if 'director_id' in data:
-            movie_to_update.director_id = data.get('director_id')
 
         self.session.add(movie_to_update)
         self.session.commit()
