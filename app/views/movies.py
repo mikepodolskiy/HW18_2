@@ -40,7 +40,7 @@ class MoviesView(Resource):
         req_json = request.json
         movie_service.create(req_json)
 
-        return f'data added ', 201, {"location": f"/movies/{req_json['id']}"}
+        return 'data added ', 201, {"location": f"/movies/{req_json['id']}"}
 
 
 @movie_ns.route('/<int:mid>')
